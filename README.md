@@ -10,15 +10,15 @@ Sound familiar? Well buckle up, bucko! We're plunging straight into golang and r
 None of this is automatic or pretty. You have been warned.
 
 ## Installing Windows Client 
-* Put kbclient.exe somewhere on your filesystem. 
+* Put kbclient.exe somewhere on your filesystem 
 * Create a shortcut to kbclient.exe
 * Configure the shortcut path to be `"X:\path\to kbclient.exe" detach`
-* Configure a hotkey combo for the shortcut (I like `Ctrl+Alt+Scroll Lock` as it also makes the scroll lock inicator somewhat useful 
+* Configure a hotkey combo for the shortcut (I like `Ctrl+Alt+Scroll Lock` as it also makes the scroll lock inicator somewhat useful)
 
 ## Installing Linux Client
 * Put kbclient somewhere on your filesystem
-* Configre a hotkey combo to run `/path/to/kbclient attach` (How you do this depends on your choice of DE but I assume if you've made it as far as needing something like this you've got that shit under control).
-    * I suggest using the same hotkey combo for Windows and Linux both.
+* Configre a hotkey combo to run `/path/to/kbclient attach` (How you do this depends on your choice of DE but I assume if you've made it as far as needing something like this you've got that shit under control)
+    * I suggest using the same hotkey combo for Windows and Linux both
 
 ## Configuring QEMU
 You must add a new monitor to your qemu invocation:

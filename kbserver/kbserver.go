@@ -51,8 +51,10 @@ func removeUSBDevice(deviceID string) {
 func findTargetDevice(devices []string) string {
     targetDevice := "Corsair K65 Gaming Keyboard"
 
-     deviceID := ""
-     for x:=0; x < len(devices); x++ {
+    deviceID := ""
+    fmt.Printf("Searching for target device '%s'---------\n",targetDevice)
+    for x:=0; x < len(devices); x++ {
+
         if strings.Contains(devices[x], targetDevice) {
             fmt.Printf("[%d] %s\n", x, devices[x])
             deviceIDWithPrefix := strings.Split(devices[x],",")[0]
@@ -85,7 +87,7 @@ func removeKeyboard(deviceID string) {
 }
 
 func attachKeyboard() {
-    if findKeyboard() == "" { 
+    if findKeyboard() != "" { 
         fmt.Println("Device appears to be attached to guest already. Doing nothing.")
     } else {
         fmt.Println("Attaching keyboard")

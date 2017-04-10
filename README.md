@@ -5,6 +5,30 @@ from a qemu guest and use it on the host system, all at the press of a button!"
 
 Sound familiar? Well buckle up, bucko! We're plunging straight into golang and racing towards that exact goal.
 
+# INSTALLING
+
+None of this is automatic or pretty. You have been warned.
+
+## Installing Windows Client 
+* Put kbclient.exe somewhere on your filesystem. 
+* Create a shortcut to kbclient.exe
+* Configure the shortcut path to be `"X:\path\to kbclient.exe" detach`
+* Configure a hotkey combo for the shortcut (I like `Ctrl+Alt+Scroll Lock` as it also makes the scroll lock inicator somewhat useful 
+
+## Installing Linux Client
+* Put kbclient somewhere on your filesystem
+* Configre a hotkey combo to run `/path/to/kbclient attach` (How you do this depends on your choice of DE but I assume if you've made it as far as needing something like this you've got that shit under control).
+    * I suggest using the same hotkey combo for Windows and Linux both.
+
+## Configuring QEMU
+You must add a new monitor to your qemu invocation:
+
+`qemu ... -chardev socket,id=mon2,host=localhost,port=4445,server,nowait -mon chardev=mon2,mode=readline`
+
+## Installing Linux Server
+
+Nothing to this yet; just run `./kbserver`
+
 # TODO
 
 * Authenticate clients of the keyboard server so that Joe Dirt can't hotplug my keyboard

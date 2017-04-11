@@ -40,7 +40,7 @@ You must add a new monitor to your qemu invocation:
 `qemu ... -chardev socket,id=mon2,*host=localhost,port=4445*,server,nowait -mon chardev=mon2,mode=readline`
 
 Note: unless you want any joker to be able to connect to and control your guest, don't bind this
-to a different interface. In fact, it should really be a local socket.
+to a different interface. In fact, it should really be a local socket, but I don't support that yet.
 
 ## Installing Linux Server
 
@@ -59,16 +59,16 @@ Eventually everything will be configured in here; for now it is just the USB dev
 * *ProductID* - A 4-digit hex identifier representing your specific product model. Find this in the output of `lsusb`.
 
 #### Sample:
-`
+```
 {
     "KeyboardName":"Corsair K65 Gaming Keyboard",
     "VendorID":"1b1c",
     "ProductID":"1b07"
 }
-`
+```
 
 # TODO
 
-* Read QEMU control socket details, keyboard name + model from config file
+* Read QEMU control socket details from config file
 * Auto-generate config file
 * (?) Develop Windows wrapper to listen for key events?

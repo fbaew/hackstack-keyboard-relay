@@ -6,6 +6,7 @@ import (
     "io/ioutil"
     "log"
     "encoding/hex"
+    "errors"
 )
 
 /*
@@ -32,37 +33,48 @@ func LoadKey(keyfile string) *[32]byte {
     return &key
 }
 
-func Encode(plainText string, key *[32]byte) string {
+func Encode(plainText string, key *[32]byte) (string, error) {
     cipherText, encryptionError := cryptopasta.Encrypt([]byte(plainText),key)
-    if encryptionError != nil { log.Fatal("Failed to encrypt text") }
+    if encryptionError != nil {
+        return "", errors.New("Failed to encrypt data")
+    }
     fmt.Println("Encrypted successfully!")
 
     hexCipherText := hex.EncodeToString(cipherText)
 
     fmt.Printf("Encrypted data: %s\n",hexCipherText)
-    return hexCipherText + "\n"
+    return hexCipherText + "\n",nil
 
 }
-
-func Decode(cipherText []byte, key *[32]byte) string {
+func Decode(cipherText []byte, key *[32]byte) (string, error) {
     hexBytes := make([]byte, hex.DecodedLen(len(cipherText)-1))
     n, decodingError := hex.Decode(hexBytes, cipherText[:len(cipherText)-1])
-    if decodingError != nil { log.Fatal(decodingError) }
+    if decodingError != nil {
+        fmt.Println("Unable to decode received string")
+        return "", errors.New("Unable to decode received string")
+    }
     fmt.Printf("Decoded string successfully...  (%d bytes)\n", n)
     fmt.Println("Decrypting string...")
+
     plainText, decryptionError := cryptopasta.Decrypt(hexBytes,key)
-    if decryptionError != nil { log.Fatal(decryptionError) }
-    return string(plainText)
+    if decryptionError != nil {
+        fmt.Println("Unable to decrypt decoded value")
+        return "", errors.New("Unable to decrypt decoded value")
+    }
+    return string(plainText), nil
 }
 
 func main() {
 //    generateKeyFile()
 
     sampleString := "Hello, world!"
-    encodedHex := Encode(sampleString, LoadKey("private.key"))
+    encodedHex, encodingError := Encode(sampleString, LoadKey("private.key"))
+    if encodingError != nil {}
     fmt.Printf("Encoded data: %s\n", encodedHex)
     fmt.Println("")
-    decodedText := Decode([]byte(encodedHex), LoadKey("private.key"))
+    decodedText, decodingError := Decode([]byte(encodedHex), LoadKey("private.key"))
+    if decodingError != nil {}
     fmt.Printf("Decoded data: %s\n",decodedText)
+
 
 }

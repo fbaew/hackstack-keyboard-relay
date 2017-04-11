@@ -6,6 +6,7 @@ import (
     "fmt"
     "os"
     "cryptoencoder"
+    "log"
 )
 
 func printUsage() {
@@ -40,7 +41,8 @@ func connectToMonitorServer(command string) {
     }
 
     key := cryptoencoder.LoadKey("private.key")
-    encryptedCommand := cryptoencoder.Encode(command, key)
+    encryptedCommand,encodingError := cryptoencoder.Encode(command, key)
+    if encodingError != nil { log.Fatal("Problem encrypting command." )}
 
     fmt.Fprintf(conn,"%s",encryptedCommand)
     //commandResponse,commandError := bufio.NewReader(conn).ReadString('\n')

@@ -99,7 +99,11 @@ func attachKeyboard() {
 func handleCommand(encryptedCommand string) {
 
     key := cryptoencoder.LoadKey("private.key")
-    command := cryptoencoder.Decode([]byte(encryptedCommand),key)
+    command, decodingError := cryptoencoder.Decode([]byte(encryptedCommand),key)
+    if decodingError != nil {
+        fmt.Println("Got invalid encrypted data; skipping.")
+        return
+    }
     fmt.Printf("Decrypted command [%s]\n", command)
     switch command {
     case "detach":

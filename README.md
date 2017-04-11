@@ -44,7 +44,28 @@ to a different interface. In fact, it should really be a local socket.
 
 ## Installing Linux Server
 
-Nothing much to this yet; just run `./kbserver`
+Nothing much to this yet; just run `./kbserver`. This will attempt to load `config.json` in the current
+working directory. If it isn't there, the server won't start. If you want to specify a different config file, do so
+with `./kbserver -config=/path/to/config.json`.
+
+### config.json
+
+Eventually everything will be configured in here; for now it is just the USB device info. Parameters:
+
+* *KeyboardName* - A string that uniquely distinguishes the keyboard to be manipulated from all other lines
+   of output from `info usb` on the qemu monitor.
+
+* *VendorID* - A 4-digit hex identifier corresponding to your hardware vendor. Find this in the output of `lsusb`.
+* *ProductID* - A 4-digit hex identifier representing your specific product model. Find this in the output of `lsusb`.
+
+#### Sample:
+`
+{
+    "KeyboardName":"Corsair K65 Gaming Keyboard",
+    "VendorID":"1b1c",
+    "ProductID":"1b07"
+}
+`
 
 # TODO
 

@@ -4,33 +4,40 @@ package main
 import (
     "net"
     "fmt"
-    "os"
+    "cryptoencoder"
+    "log"
+    "flag"
 )
 
 func printUsage() {
     fmt.Println("")
-    fmt.Println("usage: kbclient [attach|detach]")
+    fmt.Println("usage: kbclient <-attach|-detach> [-key=private.key]")
     fmt.Println("")
 }
 
 func main() {
-    if len(os.Args) != 2 {
-        printUsage()
-    } else {
-        args := os.Args[1:]
+    keyfilePointer := flag.String("key", "private.key", "path to private key")
+    attachPointer := flag.Bool("attach", false, "attach keyboard to virtual guest")
+    detachPointer := flag.Bool("detach",false, "detach keyboard from virtual guest")
 
-        switch args[0] {
-            case "attach":
-                connectToMonitorServer("attach")
-            case "detach":
-                connectToMonitorServer("detach")
-            default:
-                printUsage()
-        }
+    flag.Parse()
+
+    if *attachPointer && *detachPointer {
+        printUsage()
+        return
+    } else if !(*attachPointer || *detachPointer) {
+        printUsage()
+        return
     }
+
+    key := cryptoencoder.LoadKey(*keyfilePointer)
+    if *attachPointer { connectToMonitorServer("attach", key)
+    } else if *detachPointer {
+        connectToMonitorServer("detach", key)
+    } else {}
 }
 
-func connectToMonitorServer(command string) {
+func connectToMonitorServer(command string, key *[32]byte) {
     conn, err := net.Dial("tcp","192.168.0.13:7357")
     if err != nil {
         fmt.Println("There was a problem connecting to the monitor server")
@@ -38,7 +45,11 @@ func connectToMonitorServer(command string) {
         fmt.Println("-----------------------------\n")
     }
 
-    fmt.Fprintf(conn,"%s\n",command)
+//    key := cryptoencoder.LoadKey("private.key")
+    encryptedCommand,encodingError := cryptoencoder.Encode(command, key)
+    if encodingError != nil { log.Fatal("Problem encrypting command." )}
+
+    fmt.Fprintf(conn,"%s",encryptedCommand)
     //commandResponse,commandError := bufio.NewReader(conn).ReadString('\n')
     conn.Close()
 }

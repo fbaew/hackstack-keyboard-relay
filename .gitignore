@@ -1,5 +1,7 @@
+**/keyutil
 kbserver/kbserver
-kbclient-attach/kbclient-attach
-kbclient-detach/kbclient-detach
+kbclient/kbclient
 kbclient/kbclient.exe
-
+.idea
+**/private.key
+**/scratch.go

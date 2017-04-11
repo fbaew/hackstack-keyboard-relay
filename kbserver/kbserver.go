@@ -20,6 +20,9 @@ import (
     "fmt"
     "strings"
     "cryptoencoder"
+    "flag"
+    "config"
+    "log"
 )
 
 func qemuCommand(command string) string{
@@ -49,8 +52,8 @@ func removeUSBDevice(deviceID string) {
     qemuCommand(fmt.Sprintf("usb_del %s", deviceID))
 }
 
-func findTargetDevice(devices []string) string {
-    targetDevice := "Corsair K65 Gaming Keyboard"
+func findTargetDevice(devices []string, conf config.Message) string {
+    targetDevice := conf.KeyboardName //"Corsair K65 Gaming Keyboard"
 
     deviceID := ""
     fmt.Printf("Searching for target device '%s'---------\n",targetDevice)
@@ -65,7 +68,7 @@ func findTargetDevice(devices []string) string {
     return deviceID
 }
 
-func findKeyboard() string {
+func findKeyboard(conf config.Message) string {
 
     guestUSBQueryStatus := qemuCommand("info usb")
     deviceID := ""
@@ -73,7 +76,7 @@ func findKeyboard() string {
     raw_usb_info := strings.Split(guestUSBQueryStatus, "\n")
     fmt.Printf("%d entries in guest usb list\n",len(raw_usb_info))
 
-    deviceID = findTargetDevice(raw_usb_info)
+    deviceID = findTargetDevice(raw_usb_info, conf)
     return deviceID
 
 }
@@ -87,16 +90,16 @@ func removeKeyboard(deviceID string) {
     }
 }
 
-func attachKeyboard() {
-    if findKeyboard() != "" { 
+func attachKeyboard(conf config.Message) {
+    if findKeyboard(conf) != "" {
         fmt.Println("Device appears to be attached to guest already. Doing nothing.")
     } else {
         fmt.Println("Attaching keyboard")
-        qemuCommand("usb_add host:1b1c:1b07")
+        qemuCommand(fmt.Sprintf("usb_add host:%s:%s",conf.VendorID, conf.ProductID))
     }
 }
 
-func handleCommand(encryptedCommand string) {
+func handleCommand(encryptedCommand string, conf config.Message) {
 
     key := cryptoencoder.LoadKey("private.key")
     command, decodingError := cryptoencoder.Decode([]byte(encryptedCommand),key)
@@ -107,15 +110,15 @@ func handleCommand(encryptedCommand string) {
     fmt.Printf("Decrypted command [%s]\n", command)
     switch command {
     case "detach":
-        removeKeyboard(findKeyboard())
+        removeKeyboard(findKeyboard(conf))
     case "attach":
-        attachKeyboard()
-    default: 
+        attachKeyboard(conf)
+    default:
         fmt.Println("Got unrecognized command...")
     }
 }
 
-func handleConnection(conn net.Conn) {
+func handleConnection(conn net.Conn, conf config.Message) {
     fmt.Println("Got a new connection:")
     fmt.Println(conn)
 
@@ -125,13 +128,24 @@ func handleConnection(conn net.Conn) {
             fmt.Println(err)
             break
         }
-        go handleCommand(command)
+        go handleCommand(command, conf)
     }
     fmt.Println("Closed connection:")
     fmt.Println(conn)
 }
 
 func main() {
+    /*
+
+    */
+    configFilePointer := flag.String("config", "config.json", "Configuration file")
+    flag.Parse()
+
+    conf, configurationError := config.ParseConfig(config.LoadConfig(*configFilePointer))
+    if configurationError != nil {
+        log.Fatal(configurationError)
+    }
+
     ln, err := net.Listen("tcp", ":7357")
     if err != nil {
         fmt.Println("Error starting server")
@@ -143,6 +157,6 @@ func main() {
             fmt.Println("Error accepting new connection")
             fmt.Println(err)
         }
-        go handleConnection(conn)
+        go handleConnection(conn, conf)
     }
 }

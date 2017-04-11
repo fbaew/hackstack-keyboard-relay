@@ -5,6 +5,12 @@ between a qemu guest and my host system, all at the press of a button!"
 
 Sound familiar? Well buckle up, bucko! We're plunging straight into golang and racing towards that exact goal.
 
+## ...Why?
+
+Like most computery stuff that I do, I am mostly doing this out of curiosity. I
+wanted to give Go a try, and I have a use case (VFIO-powered Windows gaming
+virtual machine). If someone else out there uses this too, terrific!
+
 # INSTALLING
 
 None of this is automatic or pretty. You have been warned.
@@ -45,9 +51,3 @@ Nothing much to this yet; just run `./kbserver`
 * Read QEMU control socket details, keyboard name + model from config file
 * Auto-generate config file
 * (?) Develop Windows wrapper to listen for key events?
-
-# ...Why?
-
-Like most computery stuff that I do, I am mostly doing this out of curiosity. I
-wanted to give Go a try, and I have a use case (VFIO-powered Windows gaming
-virtual machine). If someone else out there uses this too, terrific!

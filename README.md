@@ -23,7 +23,7 @@ run `keyutil` with no arguments. This will generate a (pseudo)random key and sti
 ## Installing Windows Client 
 * Put kbclient.exe somewhere on your filesystem 
 * Create a shortcut to kbclient.exe
-* Configure the shortcut path to be `"X:\path\to kbclient.exe" -detach -key=X:\path\to\private.key`
+* Configure the shortcut path to be `"X:\path\to\kbclient.exe" -detach -key=X:\path\to\private.key`
 * Configure a hotkey combo for the shortcut (I like `Ctrl+Alt+Scroll Lock` as it also makes
   the scroll lock inicator somewhat useful)
 

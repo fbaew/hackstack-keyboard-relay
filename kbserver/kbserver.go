@@ -135,9 +135,6 @@ func handleConnection(conn net.Conn, conf config.Message) {
 }
 
 func main() {
-    /*
-
-    */
     configFilePointer := flag.String("config", "config.json", "Configuration file")
     flag.Parse()
 

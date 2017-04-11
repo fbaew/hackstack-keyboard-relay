@@ -4,7 +4,6 @@ import (
     "cryptopasta"
     "fmt"
     "io/ioutil"
-    "os"
     "log"
     "encoding/hex"
 )

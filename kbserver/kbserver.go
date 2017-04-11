@@ -19,6 +19,7 @@ import (
     "bufio"
     "fmt"
     "strings"
+    "cryptoencoder"
 )
 
 func qemuCommand(command string) string{
@@ -95,12 +96,15 @@ func attachKeyboard() {
     }
 }
 
-func handleCommand(command string) {
-    fmt.Println(command)
+func handleCommand(encryptedCommand string) {
+
+    key := cryptoencoder.LoadKey("private.key")
+    command := cryptoencoder.Decode([]byte(encryptedCommand),key)
+    fmt.Printf("Decrypted command [%s]\n", command)
     switch command {
-    case "detach\n":
+    case "detach":
         removeKeyboard(findKeyboard())
-    case "attach\n":
+    case "attach":
         attachKeyboard()
     default: 
         fmt.Println("Got unrecognized command...")

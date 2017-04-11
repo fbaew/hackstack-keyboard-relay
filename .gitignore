@@ -1,7 +1,6 @@
 **/keyutil
 kbserver/kbserver
-kbclient-attach/kbclient
-kbclient-detach/kbclient
+kbclient/kbclient
 kbclient/kbclient.exe
 .idea
 **/private.key

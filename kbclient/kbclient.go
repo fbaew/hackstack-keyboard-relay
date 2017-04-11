@@ -5,6 +5,7 @@ import (
     "net"
     "fmt"
     "os"
+    "cryptoencoder"
 )
 
 func printUsage() {
@@ -38,7 +39,10 @@ func connectToMonitorServer(command string) {
         fmt.Println("-----------------------------\n")
     }
 
-    fmt.Fprintf(conn,"%s\n",command)
+    key := cryptoencoder.LoadKey("private.key")
+    encryptedCommand := cryptoencoder.Encode(command, key)
+
+    fmt.Fprintf(conn,"%s",encryptedCommand)
     //commandResponse,commandError := bufio.NewReader(conn).ReadString('\n')
     conn.Close()
 }

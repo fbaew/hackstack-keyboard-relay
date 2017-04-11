@@ -9,12 +9,15 @@ Sound familiar? Well buckle up, bucko! We're plunging straight into golang and r
 
 None of this is automatic or pretty. You have been warned.
 
+## Generating a private key
+Commands issued to kbserver are encrypted with 256-bit AES. `kbclient` checks the directory from
+which it was executed for `private.key`, unless you specify `-key=path/to/private.key`. To generate this file,
+run `keyutil` with no arguments. This will generate a (pseudo)random key and stick it in `private.key`.
+
 ## Installing Windows Client 
 * Put kbclient.exe somewhere on your filesystem 
 * Create a shortcut to kbclient.exe
 * Configure the shortcut path to be `"X:\path\to kbclient.exe" -detach -key=X:\path\to\private.key`
-    * Confession: I haven't tested this yet with an explicitly specified private key. It will
-      use private.key in the directory from which it is launched by default.
 * Configure a hotkey combo for the shortcut (I like `Ctrl+Alt+Scroll Lock` as it also makes
   the scroll lock inicator somewhat useful)
 

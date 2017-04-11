@@ -42,7 +42,7 @@ func connectToMonitorServer(command string, key *[32]byte) {
     if err != nil {
         fmt.Println("There was a problem connecting to the monitor server")
         fmt.Println(err)
-        fmt.Println("-----------------------------\n")t
+        fmt.Println("-----------------------------\n")
     }
 
 //    key := cryptoencoder.LoadKey("private.key")

@@ -1,5 +1,6 @@
 {
     "KeyboardName":"Corsair K65 Gaming Keyboard",
     "VendorID":"1b1c",
-    "ProductID":"1b07"
+    "ProductID":"1b07",
+    "ManagementPort":"7357"
 }

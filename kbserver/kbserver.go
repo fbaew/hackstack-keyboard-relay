@@ -138,16 +138,19 @@ func main() {
     configFilePointer := flag.String("config", "config.json", "Configuration file")
     flag.Parse()
 
-    conf, configurationError := config.ParseConfig(config.LoadConfig(*configFilePointer))
+    conf, configurationError := config.GetServerConfig(config.LoadConfig(*configFilePointer))
     if configurationError != nil {
         log.Fatal(configurationError)
     }
 
-    ln, err := net.Listen("tcp", ":7357")
+    ln, err := net.Listen("tcp", ":" + conf.ManagementPort)
     if err != nil {
         fmt.Println("Error starting server")
         fmt.Println(err)
+        return
     }
+    fmt.Printf("Started listening on port %s\n",conf.ManagementPort)
+
     for {
         conn, err := ln.Accept()
         if err != nil {

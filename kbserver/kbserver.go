@@ -52,7 +52,7 @@ func removeUSBDevice(deviceID string) {
     qemuCommand(fmt.Sprintf("usb_del %s", deviceID))
 }
 
-func findTargetDevice(devices []string, conf config.Message) string {
+func findTargetDevice(devices []string, conf *config.Message) string {
     targetDevice := conf.KeyboardName //"Corsair K65 Gaming Keyboard"
 
     deviceID := ""
@@ -68,7 +68,7 @@ func findTargetDevice(devices []string, conf config.Message) string {
     return deviceID
 }
 
-func findKeyboard(conf config.Message) string {
+func findKeyboard(conf *config.Message) string {
 
     guestUSBQueryStatus := qemuCommand("info usb")
     deviceID := ""
@@ -90,7 +90,7 @@ func removeKeyboard(deviceID string) {
     }
 }
 
-func attachKeyboard(conf config.Message) {
+func attachKeyboard(conf *config.Message) {
     if findKeyboard(conf) != "" {
         fmt.Println("Device appears to be attached to guest already. Doing nothing.")
     } else {
@@ -99,7 +99,7 @@ func attachKeyboard(conf config.Message) {
     }
 }
 
-func handleCommand(encryptedCommand string, conf config.Message) {
+func handleCommand(encryptedCommand string, conf *config.Message) {
 
     key := cryptoencoder.LoadKey("private.key")
     command, decodingError := cryptoencoder.Decode([]byte(encryptedCommand),key)
@@ -118,7 +118,7 @@ func handleCommand(encryptedCommand string, conf config.Message) {
     }
 }
 
-func handleConnection(conn net.Conn, conf config.Message) {
+func handleConnection(conn net.Conn, conf *config.Message) {
     fmt.Println("Got a new connection:")
     fmt.Println(conn)
 
@@ -154,6 +154,6 @@ func main() {
             fmt.Println("Error accepting new connection")
             fmt.Println(err)
         }
-        go handleConnection(conn, conf)
+        go handleConnection(conn, &conf)
     }
 }

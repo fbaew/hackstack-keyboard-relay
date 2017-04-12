@@ -7,6 +7,7 @@ import (
     "cryptoencoder"
     "log"
     "flag"
+    "config"
 )
 
 func printUsage() {
@@ -19,6 +20,7 @@ func main() {
     keyfilePointer := flag.String("key", "private.key", "path to private key")
     attachPointer := flag.Bool("attach", false, "attach keyboard to virtual guest")
     detachPointer := flag.Bool("detach",false, "detach keyboard from virtual guest")
+    configFilePointer := flag.String("config", "config.json", "path to configuration file")
 
     flag.Parse()
 
@@ -30,15 +32,20 @@ func main() {
         return
     }
 
+    conf, configurationError := config.GetClientConfig(config.LoadConfig(*configFilePointer))
+    if configurationError != nil {
+        log.Fatal(configurationError)
+    }
+
     key := cryptoencoder.LoadKey(*keyfilePointer)
-    if *attachPointer { connectToMonitorServer("attach", key)
+    if *attachPointer { connectToMonitorServer("attach", key, &conf)
     } else if *detachPointer {
-        connectToMonitorServer("detach", key)
+        connectToMonitorServer("detach", key, &conf)
     } else {}
 }
 
-func connectToMonitorServer(command string, key *[32]byte) {
-    conn, err := net.Dial("tcp","192.168.0.13:7357")
+func connectToMonitorServer(command string, key *[32]byte, conf *config.Message) {
+    conn, err := net.Dial("tcp",conf.ManagementHost + ":" + conf.ManagementPort)
     if err != nil {
         fmt.Println("There was a problem connecting to the monitor server")
         fmt.Println(err)

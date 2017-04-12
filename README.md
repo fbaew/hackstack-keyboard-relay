@@ -41,6 +41,15 @@ run `keyutil` with no arguments. This will generate a (pseudo)random key and sti
 Specify the hostname/IP and port number where `kbserver` is listening. `kbclient` will attempt to load `config.json`
 from the current working directory, or it will try to load the file specified by `-config=/path/to/config.json`
 
+#### Sample:
+```json
+{
+    "ManagementPort":"7357",
+    "ManagementHost":"192.168.0.13"
+}
+
+```
+
 ## Configuring QEMU
 You must add a new monitor to your qemu invocation:
 
@@ -65,7 +74,7 @@ with `./kbserver -config=/path/to/config.json`.
 * *ManagementPort* - The TCP on which to listen for connections from `kbclient`. Always binds to `localhost`.
 
 #### Sample:
-```
+```json
 {
     "KeyboardName":"Corsair K65 Gaming Keyboard",
     "VendorID":"1b1c",

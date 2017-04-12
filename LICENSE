@@ -1,3 +1,9 @@
+Note: The cryptopasta package is dedicated to the public domain as per
+Creative Commons (CC0 1.0 Universal). See cryptopasta/encrypt.go for further
+information.
+
+All other portions of this repository are licensed as follows:
+
 MIT License
 
 Copyright (c) 2017 Gregory Lewis

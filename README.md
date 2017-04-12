@@ -86,3 +86,5 @@ with `./kbserver -config=/path/to/config.json`.
 
 * Auto-generate config file
 * (?) Develop Windows wrapper to listen for key events?
+* Comment *EVERYTHING*
+* Develop tests

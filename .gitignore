@@ -5,3 +5,4 @@ kbclient/kbclient.exe
 .idea
 **/private.key
 **/scratch.go
+**/config.json

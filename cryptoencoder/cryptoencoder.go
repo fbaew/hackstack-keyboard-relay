@@ -1,7 +1,7 @@
 package cryptoencoder
 
 import (
-    "cryptopasta"
+    "hackstack-keyboard-relay/cryptopasta"
     "fmt"
     "io/ioutil"
     "log"

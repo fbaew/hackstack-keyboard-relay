@@ -4,10 +4,10 @@ package main
 import (
     "net"
     "fmt"
-    "cryptoencoder"
     "log"
     "flag"
-    "config"
+    "hackstack-keyboard-relay/cryptoencoder"
+    "hackstack-keyboard-relay/config"
 )
 
 func printUsage() {
@@ -50,6 +50,7 @@ func connectToMonitorServer(command string, key *[32]byte, conf *config.Message)
         fmt.Println("There was a problem connecting to the monitor server")
         fmt.Println(err)
         fmt.Println("-----------------------------\n")
+        log.Fatal("Terminating")
     }
 
 //    key := cryptoencoder.LoadKey("private.key")

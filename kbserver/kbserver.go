@@ -19,9 +19,9 @@ import (
     "bufio"
     "fmt"
     "strings"
-    "cryptoencoder"
+    "hackstack-keyboard-relay/cryptoencoder"
     "flag"
-    "config"
+    "hackstack-keyboard-relay/config"
     "log"
 )
 

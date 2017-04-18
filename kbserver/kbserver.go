@@ -23,6 +23,7 @@ import (
     "flag"
     "hackstack-keyboard-relay/config"
     "log"
+    "time"
 )
 
 func qemuCommand(command string) string{
@@ -108,11 +109,17 @@ func handleCommand(encryptedCommand string, conf *config.Message) {
         return
     }
     fmt.Printf("Decrypted command [%s]\n", command)
+    fmt.Printf("Cached device ID: %s\n", conf.QEMUDeviceID)
     switch command {
     case "detach":
-        removeKeyboard(findKeyboard(conf))
+        if conf.QEMUDeviceID != "" {
+            removeKeyboard(conf.QEMUDeviceID)
+        } else {
+            removeKeyboard(findKeyboard(conf))
+        }
     case "attach":
         attachKeyboard(conf)
+        go updateCachedDeviceID(conf)
     default:
         fmt.Println("Got unrecognized command...")
     }
@@ -132,6 +139,12 @@ func handleConnection(conn net.Conn, conf *config.Message) {
     }
     fmt.Println("Closed connection:")
     fmt.Println(conn)
+}
+
+func updateCachedDeviceID(conf *config.Message) {
+    fmt.Println("Updating cached device id... waiting a sec before doing so.")
+    time.Sleep(3 * time.Second)
+    conf.QEMUDeviceID = findKeyboard(conf)
 }
 
 func main() {

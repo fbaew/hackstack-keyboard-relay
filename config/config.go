@@ -12,6 +12,7 @@ import (
 type Message struct {
     KeyboardName, VendorID, ProductID, ManagementPort string
     ManagementHost string
+    QEMUDeviceID string
 }
 
 func LoadConfig(configFile string) string {
@@ -46,6 +47,7 @@ func parseConfig(configData string) (Message, error) {
         serverConfigValid, clientConfigValid := validateConfig(m)
 
         if  serverConfigValid || clientConfigValid {
+            m.QEMUDeviceID = ""
             return m, nil
         } else {
             return m, errors.New("Invalid configuration.")
